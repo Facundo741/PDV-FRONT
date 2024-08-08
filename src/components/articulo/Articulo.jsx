@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Form, Button, Col, Row, InputGroup } from "react-bootstrap";
+import { Container, Form, Button, Col, Row, InputGroup, Alert } from "react-bootstrap";
 
 const ProductForm = () => {
   const generateId = () => {
@@ -19,6 +19,7 @@ const ProductForm = () => {
 
   const [product, setProduct] = useState(initialProductState);
   const [validated, setValidated] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,16 +32,24 @@ const ProductForm = () => {
     if (form.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
+      setShowSuccess(false);
     } else {
       console.log("Producto agregado:", product);
       setProduct(initialProductState);
       setValidated(false);
+      setShowSuccess(true);
     }
   };
 
   return (
-    <Container className="d-flex justify-content-center">
+    <Container className="d-flex flex-column align-items-center mt-5">
+      <h1 className="mb-4 text-center">Carga de Artículos</h1>
       <Form className="w-50" noValidate validated={validated} onSubmit={handleSubmit}>
+        {showSuccess && (
+          <Alert variant="success">
+            Producto agregado exitosamente!
+          </Alert>
+        )}
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="codigo">
             <Form.Label>Código</Form.Label>
@@ -146,7 +155,7 @@ const ProductForm = () => {
           </InputGroup>
         </Form.Group>
 
-        <Button type="submit">Agregar Producto</Button>
+        <Button type="submit" variant="primary">Agregar Producto</Button>
       </Form>
     </Container>
   );
