@@ -6,6 +6,14 @@ const ProductForm = () => {
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
   };
 
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const initialProductState = {
     id: generateId(),
     codigo: "",
@@ -14,7 +22,7 @@ const ProductForm = () => {
     talle: "",
     cantidad: "",
     sucursal: "",
-    fechaCarga: "",
+    fechaCarga: getCurrentDate(),
   };
 
   const [product, setProduct] = useState(initialProductState);
@@ -35,7 +43,10 @@ const ProductForm = () => {
       setShowSuccess(false);
     } else {
       console.log("Producto agregado:", product);
-      setProduct(initialProductState);
+      setProduct({
+        ...initialProductState,
+        fechaCarga: getCurrentDate() 
+      });
       setValidated(false);
       setShowSuccess(true);
     }
@@ -141,18 +152,15 @@ const ProductForm = () => {
 
         <Form.Group className="mb-3" controlId="fechaCarga">
           <Form.Label>Fecha de Carga</Form.Label>
-          <InputGroup>
-            <Form.Control
-              required
-              type="date"
-              name="fechaCarga"
-              value={product.fechaCarga}
-              onChange={handleChange}
-            />
-            <Form.Control.Feedback type="invalid">
-              Por favor ingrese una fecha válida.
-            </Form.Control.Feedback>
-          </InputGroup>
+          <Form.Control
+            type="date"
+            name="fechaCarga"
+            value={product.fechaCarga}
+            readOnly
+          />
+          <Form.Control.Feedback type="invalid">
+            Por favor ingrese una fecha válida.
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Button type="submit" variant="primary">Agregar Producto</Button>
