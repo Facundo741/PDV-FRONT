@@ -37,6 +37,8 @@ const ProductForm = () => {
 
   return (
     <Container className="d-flex justify-content-center">
+    <h1 className="d-block">Carga de Articulos</h1>
+
     <Form className="w-50 " noValidate validated={validated} onSubmit={handleSubmit}>
       <Row className="mb-3">
         <Form.Group as={Col} md="4" controlId="codigo">
